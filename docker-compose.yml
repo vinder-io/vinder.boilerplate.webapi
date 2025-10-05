@@ -1,0 +1,48 @@
+services:
+  vinder.sample.infrastructure.mongo.database:
+    container_name: "vinder.sample.database"
+    image: mongo:latest
+    env_file:
+      - .env
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    volumes:
+      - vinder.sample.infrastructure.mongo.database:/data/db
+
+  vinder.infrastructure.identity.provider:
+    container_name: "vinder.identity.provider"
+    image: vinderio/identity.provider:latest
+    env_file:
+      - .env
+    ports:
+      - "5000:8080"
+    depends_on:
+      - vinder.sample.infrastructure.mongo.database
+    environment:
+      Settings__Database__ConnectionString: ${MONGO_CONNECTIONSTRING}
+      Settings__Database__DatabaseName: ${MONGO_DATABASENAME}
+      Settings__Administration__Username: ${ADMIN_USERNAME}
+      Settings__Administration__Password: ${ADMIN_PASSWORD}
+
+  vinder.sample:
+    container_name: "vinder.sample"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      Settings__Database__ConnectionString: ${MONGO_CONNECTIONSTRING}
+      Settings__Database__DatabaseName: ${MONGO_DATABASENAME}
+      Settings__Federation__BaseUrl: ${FEDERATION_BASEURL}
+      Settings__Federation__Tenant: ${FEDERATION_TENANT}
+      Settings__Federation__ClientId: ${FEDERATION_CLIENT_ID}
+      Settings__Federation__ClientSecret: ${FEDERATION_CLIENT_SECRET}
+    depends_on:
+      - vinder.sample.infrastructure.mongo.database
+
+volumes:
+  vinder.sample.infrastructure.mongo.database:
