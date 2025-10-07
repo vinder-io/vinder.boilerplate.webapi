@@ -1,6 +1,6 @@
 namespace Vinder.Sample.WebApi;
 
-internal static class Program
+public partial class Program
 {
     private static async Task Main(string[] args)
     {
