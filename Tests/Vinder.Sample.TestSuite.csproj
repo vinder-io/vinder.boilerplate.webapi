@@ -9,9 +9,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoFixture" Version="4.18.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.8" />
+    <PackageReference Include="Moq" Version="4.20.70" />
+    <PackageReference Include="coverlet.collector" Version="6.0.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="Testcontainers" Version="4.6.0" />
     <PackageReference Include="xunit.v3" Version="3.0.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="3.1.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Source\Vinder.Sample.Application\Vinder.Sample.Application.csproj" />
+    <ProjectReference Include="..\Source\Vinder.Sample.CrossCutting\Vinder.Sample.CrossCutting.csproj" />
+    <ProjectReference Include="..\Source\Vinder.Sample.Domain\Vinder.Sample.Domain.csproj" />
+    <ProjectReference Include="..\Source\Vinder.Sample.Infrastructure\Vinder.Sample.Infrastructure.csproj" />
+    <ProjectReference Include="..\Source\Vinder.Sample.WebApi\Vinder.Sample.WebApi.csproj" />
   </ItemGroup>
 
   <ItemGroup>
