@@ -1,28 +1,28 @@
 namespace Vinder.Sample.Application.Handlers.Traceability;
 
 public sealed class FetchActivitiesHandler(IActivityRepository repository) :
-    IRequestHandler<ActivityFetchParameters, Result<PaginationScheme<ActivityDetailsScheme>>>
+    IMessageHandler<ActivityFetchParameters, Result<PaginationScheme<ActivityDetailsScheme>>>
 {
-    public async Task<Result<PaginationScheme<ActivityDetailsScheme>>> Handle(
-        ActivityFetchParameters request, CancellationToken cancellationToken)
+    public async Task<Result<PaginationScheme<ActivityDetailsScheme>>> HandleAsync(
+        ActivityFetchParameters message, CancellationToken cancellation = default)
     {
         var filters = ActivityFilters.WithSpecifications()
-            .WithAction(request.Action)
-            .WithUser(request.UserId)
-            .WithTenant(request.TenantId)
-            .WithResource(request.Resource)
-            .WithPagination(request.Pagination)
+            .WithAction(message.Action)
+            .WithUser(message.UserId)
+            .WithTenant(message.TenantId)
+            .WithResource(message.Resource)
+            .WithPagination(message.Pagination)
             .Build();
 
-        var activities = await repository.GetActivitiesAsync(filters, cancellation: cancellationToken);
-        var total = await repository.CountAsync(filters, cancellation: cancellationToken);
+        var activities = await repository.GetActivitiesAsync(filters, cancellation: cancellation);
+        var total = await repository.CountAsync(filters, cancellation: cancellation);
 
         var pagination = new PaginationScheme<ActivityDetailsScheme>
         {
             Items = [.. activities.Select(activity => ActivityMapper.AsResponse(activity))],
             Total = (int)total,
-            PageNumber = request.Pagination.PageNumber,
-            PageSize = request.Pagination.PageSize,
+            PageNumber = message.Pagination.PageNumber,
+            PageSize = message.Pagination.PageSize,
         };
 
         return Result<PaginationScheme<ActivityDetailsScheme>>.Success(pagination);

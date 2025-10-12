@@ -1,7 +1,7 @@
 namespace Vinder.Sample.Application.Payloads.Traceability;
 
 public sealed record ActivityFetchParameters :
-    IRequest<Result<PaginationScheme<ActivityDetailsScheme>>>
+    IMessage<Result<PaginationScheme<ActivityDetailsScheme>>>
 {
     public string? Action { get; init; }
     public string? Resource { get; init; }

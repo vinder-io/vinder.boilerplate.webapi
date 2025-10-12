@@ -2,13 +2,14 @@ namespace Vinder.Sample.WebApi.Controllers;
 
 [ApiController]
 [Route("api/v1/activities")]
-public sealed class ActivitiesController(IMediator mediator) : ControllerBase
+public sealed class ActivitiesController(IDispatcher dispatcher) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetActivities(
+    [Authorize(Roles = Permissions.ViewActivities)]
+    public async Task<IActionResult> GetActivitiesAsync(
         [FromQuery] ActivityFetchParameters request, CancellationToken cancellation)
     {
-        var result = await mediator.Send(request, cancellation);
+        var result = await dispatcher.DispatchAsync(request, cancellation);
 
         // we know the switch here is not strictly necessary since we only handle the success case,
         // but we keep it for consistency with the rest of the codebase and to follow established patterns.

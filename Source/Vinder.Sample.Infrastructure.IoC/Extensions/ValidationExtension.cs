@@ -5,6 +5,6 @@ public static class ValidationExtension
 {
     public static void AddValidation(this IServiceCollection services)
     {
-        services.AddTransient<IValidator<ProductCreationScheme>, ProductCreationValidator>();
+
     }
 }

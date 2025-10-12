@@ -14,6 +14,5 @@ public static class DataPersistenceExtension
         });
 
         services.AddTransient<IActivityRepository, ActivityRepository>();
-        services.AddTransient<IProductRepository, ProductRepository>();
     }
 }

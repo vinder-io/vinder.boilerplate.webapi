@@ -5,9 +5,6 @@ public static class MediatorExtension
 {
     public static void AddMediator(this IServiceCollection services)
     {
-        services.AddMediatR(options =>
-        {
-            options.RegisterServicesFromAssemblyContaining<ProductCreationHandler>();
-        });
+        services.AddDispatcher(typeof(FetchActivitiesHandler));
     }
 }
